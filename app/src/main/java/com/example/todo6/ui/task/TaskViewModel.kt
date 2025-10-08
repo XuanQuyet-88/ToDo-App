@@ -19,10 +19,10 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
 
     val filteredTasks: LiveData<List<Task>>
     init {
-        filteredTasks = MediatorLiveData<List<Task>>().apply Observer@{
+        filteredTasks = MediatorLiveData<List<Task>>().apply {
             var source: LiveData<List<Task>>? = null
 
-            val observer = Observer<Any>{
+            val observer = Observer<Any?>{
                 source?.let { removeSource(it) }
 
                 val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@Observer
@@ -34,7 +34,7 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
                 source = repository.getFilteredTasks(userId, query, status, startDate, endDate)
                 source.let { newSource ->
                     addSource(newSource){tasks ->
-                        value = tasks
+                        value = tasks ?: emptyList()
                     }
                 }
             }

@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     app:singleSelection="true">
-                    
+
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chipAll"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
@@ -134,7 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:contentDescription="Thêm"
+            android:contentDescription="@string/th_m"
             android:src="@drawable/ic_baseline_add_"
             app:backgroundTint="@color/purple_500"
             app:tint="@android:color/white"

@@ -1,5 +1,7 @@
 package com.example.todo6.ui.fragments
 
+import android.app.DatePickerDialog
+import java.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +76,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun registerFilterEvents() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextChange(newText: String?): Boolean {
+                taskViewModel.setSearchQuery(newText)
                 return true
             }
 
@@ -83,10 +86,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         })
 
         binding.chipGroupStatus?.setOnCheckedChangeListener { group, checkedId ->
-            when(checkedId){
-                R.id.chipAll -> taskViewModel.setFilterStatus(null)
-                R.id.chipCompleted -> taskViewModel.setFilterStatus(true)
-                R.id.chipPending -> taskViewModel.setFilterStatus(false)
+            val status = when (checkedId) {
+                R.id.chipCompleted -> true
+                R.id.chipPending -> false
+                else -> null // chipAll
+            }
+            taskViewModel.setFilterStatus(status)
+        }
+
+        binding.btnDatePicker.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            DatePickerDialog(requireContext(),
+                {_, year, month, dayOfMonth ->
+                    val selectedDate = Calendar.getInstance().apply {
+                        set(year, month, dayOfMonth)
+                    }
+                    taskViewModel.setFilterDate(selectedDate)
+                    binding.btnClearDateFilter.visibility = View.VISIBLE
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+            ).show()
+
+            binding.btnClearDateFilter.setOnClickListener {
+                taskViewModel.setFilterDate(null)
+                it.visibility = View.GONE
             }
         }
     }
@@ -159,17 +184,23 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
 
         //observe data tu room db
-        taskViewModel.getTaskByUserId(currentUserId).observe(viewLifecycleOwner){tasks ->
-            if(tasks.isNotEmpty()){
-                taskAdpater.apply {
-                    taskList.clear()
-                    taskList.addAll(tasks)
-                    notifyDataSetChanged()
-                }
-            }else{
-                loadTasksFromFB()
-            }
+//        taskViewModel.getTaskByUserId(currentUserId).observe(viewLifecycleOwner){tasks ->
+//            if(tasks.isNotEmpty()){
+//                taskAdpater.apply {
+//                    taskList.clear()
+//                    taskList.addAll(tasks)
+//                    notifyDataSetChanged()
+//                }
+//            }else{
+//                loadTasksFromFB()
+//            }
+//        }
+
+        taskViewModel.filteredTasks.observe(viewLifecycleOwner){ tasks ->
+            taskAdpater.updatedTask(tasks)
         }
+
+        loadTasksFromFB()
     }
 
     private fun loadTasksFromFB() {
