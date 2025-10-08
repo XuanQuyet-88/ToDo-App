@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "826632281203",
+    "firebase_url": "https://todo6-59f83-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "todo6-59f83",
+    "storage_bucket": "todo6-59f83.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826632281203:android:3d77f22c7f32cb7c5bde06",
+        "android_client_info": {
+          "package_name": "com.example.todo6"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4CLbWiXQ3tY7JRzLtUYFkyMMlaD1Oubo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
