@@ -27,5 +27,20 @@ interface TaskDAO {
     @Query("DELETE FROM tasks WHERE userId = :userId")
     suspend fun deleteAllTasksByUserId(userId: String)
 
-    suspend fun getFilteredTask()
+    @Query("""
+        SELECT * FROM tasks
+        WHERE userId = :userId
+        AND (:query IS NULL OR title LIKE '%' || :query || '%')
+        AND (:status IS NULL OR completed = :status)
+        AND (:startDate IS NULL OR deadline >= :startDate)
+        AND (:endDate IS NULL OR deadline <= :endDate)
+        ORDER BY deadline DESC
+    """)
+    suspend fun getFilteredTask(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ) : LiveData<List<Task>>
 }
