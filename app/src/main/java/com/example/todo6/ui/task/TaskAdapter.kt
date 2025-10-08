@@ -82,4 +82,10 @@ class TaskAdapter(
     override fun getItemCount(): Int {
         return taskList.size
     }
+
+    fun updatedTask(newTaskList: List<Task>){
+        taskList.clear()
+        taskList.addAll(newTaskList)
+        notifyDataSetChanged()
+    }
 }

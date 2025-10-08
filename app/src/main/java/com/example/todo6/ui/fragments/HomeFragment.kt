@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -67,7 +68,29 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
         init(view)
         registerEvents()
+        registerFilterEvents()
     }
+
+    private fun registerFilterEvents() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+        })
+
+        binding.chipGroupStatus?.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.chipAll -> taskViewModel.setFilterStatus(null)
+                R.id.chipCompleted -> taskViewModel.setFilterStatus(true)
+                R.id.chipPending -> taskViewModel.setFilterStatus(false)
+            }
+        }
+    }
+
     private fun init(view: View) {
         auth = FirebaseAuth.getInstance()
         dbRef = FirebaseDatabase.getInstance().getReference("Users")

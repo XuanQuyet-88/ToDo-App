@@ -36,7 +36,7 @@ interface TaskDAO {
         AND (:endDate IS NULL OR deadline <= :endDate)
         ORDER BY deadline DESC
     """)
-    suspend fun getFilteredTask(
+    fun getFilteredTask(
         userId: String,
         query: String?,
         status: Boolean?,

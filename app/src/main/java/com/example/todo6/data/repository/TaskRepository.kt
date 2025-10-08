@@ -24,4 +24,14 @@ class TaskRepository(private val taskDAO: TaskDAO) {
     suspend fun deleteAllTasksByUserId(userId: String) {
         taskDAO.deleteAllTasksByUserId(userId)
     }
+
+    fun getFilteredTasks(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ): LiveData<List<Task>>{
+        return taskDAO.getFilteredTask(userId, query, status, startDate, endDate)
+    }
 }
