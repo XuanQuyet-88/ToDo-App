@@ -54,80 +54,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/llFilters"
-            android:layout_width="0dp"
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="8dp"
+            android:iconifiedByDefault="false"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/search_view_bgr"
+            android:queryHint="Tìm kiếm công việc..."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnShowListOptions">
-
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:iconifiedByDefault="false"
-                android:background="@drawable/search_view_bgr"
-                android:queryHint="Tìm kiếm công việc..."/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chipGroupStatus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:singleSelection="true">
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipAll"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="Tất cả" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipCompleted"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hoàn thành" />
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipPending"
-                        style="@style/Widget.MaterialComponents.Chip.Filter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Chưa làm" />
-                </com.google.android.material.chip.ChipGroup>
-
-                <ImageView
-                    android:id="@+id/btnDatePicker"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_my_calendar"/>
-
-                <ImageView
-                    android:id="@+id/btnClearDateFilter"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:padding="4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@android:drawable/ic_menu_close_clear_cancel"
-                    android:visibility="gone"
-                    tools:visibility="visible"/>
-            </LinearLayout>
-
-        </LinearLayout>
+            app:layout_constraintTop_toBottomOf="@+id/btnShowListOptions"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btnAddTask"
@@ -146,10 +85,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:paddingTop="8dp"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llFilters" />
+            app:layout_constraintTop_toBottomOf="@+id/searchView"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

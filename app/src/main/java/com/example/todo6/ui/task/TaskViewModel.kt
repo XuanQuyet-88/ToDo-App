@@ -15,7 +15,8 @@ import java.util.Calendar
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     private val _searchQuery = MutableLiveData<String>(null)
     private val _filterStatus = MutableLiveData<Boolean?>(null)
-    private val _filterDate = MutableLiveData<Pair<Long, Long>?>(null)
+    private val _startDate = MutableLiveData<Long?>(null)
+    private val _endDate = MutableLiveData<Long?>(null)
 
     val filteredTasks: LiveData<List<Task>>
     init {
@@ -28,8 +29,8 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
                 val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@Observer
                 val query = _searchQuery.value
                 val status = _filterStatus.value
-                val startDate = _filterDate.value?.first
-                val endDate = _filterDate.value?.second
+                val startDate = _startDate.value
+                val endDate = _endDate.value
 
                 source = repository.getFilteredTasks(userId, query, status, startDate, endDate)
                 source.let { newSource ->
@@ -40,7 +41,8 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
             }
             addSource(_searchQuery, observer)
             addSource(_filterStatus, observer)
-            addSource(_filterDate, observer)
+            addSource(_startDate, observer)
+            addSource(_endDate, observer)
         }
     }
 
@@ -52,24 +54,18 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
         _filterStatus.value = status
     }
 
-    fun setFilterDate(calendar: Calendar?) {
-        if (calendar == null) {
-            _filterDate.value = null
-        } else {
-            // Set to start of the day
-            calendar.set(Calendar.HOUR_OF_DAY, 0)
-            calendar.set(Calendar.MINUTE, 0)
-            calendar.set(Calendar.SECOND, 0)
-            val startDate = calendar.timeInMillis
+    fun setFilterStartDate(calendar: Calendar?){
+        calendar?.set(Calendar.HOUR_OF_DAY, 0)
+        calendar?.set(Calendar.MINUTE, 0)
+        calendar?.set(Calendar.SECOND, 0)
+        _startDate.value = calendar?.timeInMillis
+    }
 
-            // Set to end of the day
-            calendar.set(Calendar.HOUR_OF_DAY, 23)
-            calendar.set(Calendar.MINUTE, 59)
-            calendar.set(Calendar.SECOND, 59)
-            val endDate = calendar.timeInMillis
-
-            _filterDate.value = Pair(startDate, endDate)
-        }
+    fun setFilterEndDate(calendar: Calendar?){
+        calendar?.set(Calendar.HOUR_OF_DAY, 23)
+        calendar?.set(Calendar.MINUTE, 59)
+        calendar?.set(Calendar.SECOND, 59)
+        _endDate.value = calendar?.timeInMillis
     }
 
     fun insert(task: Task) = viewModelScope.launch {

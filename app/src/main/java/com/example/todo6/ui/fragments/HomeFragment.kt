@@ -1,12 +1,13 @@
 package com.example.todo6.ui.fragments
 
-import android.app.DatePickerDialog
+import  android.app.DatePickerDialog
 import java.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -26,9 +27,12 @@ import com.example.todo6.ui.task.TaskAdapter
 import com.example.todo6.ui.task.TaskDetailPopupFragment
 import com.example.todo6.ui.task.TaskViewModel
 import com.example.todo6.ui.task.TaskViewModelFactory
+import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var auth: FirebaseAuth
@@ -38,6 +42,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var dbRef : DatabaseReference
     private lateinit var navController: NavController
     private lateinit var taskAdpater : TaskAdapter
+
+    //filter theo ngay
+    private var selectedStartDate: Calendar? = null
+    private var selectedEndDate: Calendar? = null
     private val taskViewModel: TaskViewModel by viewModels {
         val taskDao = TaskDatabase.getInstance(requireContext()).taskDao()
         val repository = TaskRepository(taskDao)
@@ -74,45 +82,77 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun registerFilterEvents() {
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
             override fun onQueryTextChange(newText: String?): Boolean {
                 taskViewModel.setSearchQuery(newText)
                 return true
             }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
         })
 
-        binding.chipGroupStatus?.setOnCheckedChangeListener { group, checkedId ->
-            val status = when (checkedId) {
+        val headerView = binding.navigationView.getHeaderView(0)
+        val chipGroupStatus = headerView.findViewById<ChipGroup>(R.id.chipGroupStatus)
+        val tvStartDate = headerView.findViewById<TextView>(R.id.tvStartDate)
+        val tvEndDate = headerView.findViewById<TextView>(R.id.tvEndDate)
+        val btnClearDateFilter = headerView.findViewById<View>(R.id.btnClearDateFilter)
+
+        chipGroupStatus.setOnCheckedChangeListener { _, checkedId ->
+            val status = when(checkedId){
                 R.id.chipCompleted -> true
                 R.id.chipPending -> false
-                else -> null // chipAll
+                else -> null
             }
             taskViewModel.setFilterStatus(status)
         }
 
-        binding.btnDatePicker.setOnClickListener {
+        tvStartDate.setOnClickListener {
             val calendar = Calendar.getInstance()
-            DatePickerDialog(requireContext(),
-                {_, year, month, dayOfMonth ->
-                    val selectedDate = Calendar.getInstance().apply {
-                        set(year, month, dayOfMonth)
-                    }
-                    taskViewModel.setFilterDate(selectedDate)
-                    binding.btnClearDateFilter.visibility = View.VISIBLE
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
+                    val selectedDate = Calendar.getInstance().apply { set(year, month, dayOfMonth) }
+                    selectedStartDate = selectedDate
+                    taskViewModel.setFilterStartDate(selectedDate)
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    tvStartDate.text = sdf.format(selectedDate.time)
+                    btnClearDateFilter.visibility = View.VISIBLE
                 },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
-
-            binding.btnClearDateFilter.setOnClickListener {
-                taskViewModel.setFilterDate(null)
-                it.visibility = View.GONE
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            selectedEndDate?.let {
+                datePickerDialog.datePicker.maxDate = it.timeInMillis
             }
+            datePickerDialog.show()
+        }
+
+        tvEndDate.setOnClickListener {
+            val calendar = Calendar.getInstance()
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                {_, year, month, dayOfMoth ->
+                    val selectedDate = Calendar.getInstance().apply { set(year, month, dayOfMoth) }
+                    selectedEndDate = selectedDate
+                    taskViewModel.setFilterEndDate(selectedDate)
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    tvEndDate.text = sdf.format(selectedDate.time)
+                    btnClearDateFilter.visibility = View.VISIBLE
+                },
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+            )
+            selectedStartDate?.let {
+                datePickerDialog.datePicker.minDate = it.timeInMillis
+            }
+            datePickerDialog.show()
+        }
+
+        btnClearDateFilter.setOnClickListener {
+            taskViewModel.setFilterStartDate(null)
+            taskViewModel.setFilterEndDate(null)
+            selectedStartDate = null
+            selectedEndDate = null
+            tvStartDate.text = "Từ ngày"
+            tvEndDate.text = "Đến ngày"
+            it.visibility = View.GONE
         }
     }
 

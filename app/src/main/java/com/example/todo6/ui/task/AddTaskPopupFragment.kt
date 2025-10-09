@@ -3,7 +3,6 @@ package com.example.todo6.ui.task
 import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TimePickerDialog
 import android.content.Context
@@ -141,6 +140,10 @@ class AddTaskPopupFragment : DialogFragment() {
                         calendar.set(Calendar.HOUR_OF_DAY, hour)
                         calendar.set(Calendar.MINUTE, minute)
                         calendar.set(Calendar.SECOND, 0)
+                        if(calendar.timeInMillis < System.currentTimeMillis()){
+                            Toast.makeText(requireContext(), "Không thể chọn thời gian trong quá khứ", Toast.LENGTH_SHORT).show()
+                            return@TimePickerDialog
+                        }
                         reminderTime = calendar.timeInMillis
                         binding.tvReminder.text =
                             "Nhắc lúc: $day/${month + 1}/$year $hour:$minute"
