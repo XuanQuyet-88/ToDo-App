@@ -22,5 +22,6 @@
     <string name="deadline_01_01_2025_12_00">Deadline: 01/01/2025 12:00</string>
     <string name="status">Status:</string>
     <string name="ng">Đóng</string>
-    <string name="th_m">Thêm</string>
+    <string name="default_web_client_id">826632281203-phk5fccnu7l7v4u78a2s0malj9hmj7hj.apps.googleusercontent.com</string>
+    <string name="add_task">Add Task</string>D
 </resources>

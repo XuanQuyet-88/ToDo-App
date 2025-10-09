@@ -1,21 +1,27 @@
 package com.example.todo6.ui.fragments
 
-import  android.app.DatePickerDialog
+import android.app.DatePickerDialog
 import java.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.todo6.R
 import com.example.todo6.data.database.TaskDatabase
 import com.example.todo6.data.model.Task
@@ -31,6 +37,7 @@ import com.google.android.material.chip.ChipGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,6 +49,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var dbRef : DatabaseReference
     private lateinit var navController: NavController
     private lateinit var taskAdpater : TaskAdapter
+    private lateinit var credentialManager: CredentialManager
 
     //filter theo ngay
     private var selectedStartDate: Calendar? = null
@@ -51,6 +59,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val repository = TaskRepository(taskDao)
         TaskViewModelFactory(repository)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,6 +88,31 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         init(view)
         registerEvents()
         registerFilterEvents()
+        loadInforUser()
+    }
+
+    private fun loadInforUser() {
+        val headerView = binding.navigationView.getHeaderView(0)
+        val tvName = headerView.findViewById<TextView>(R.id.tvName)
+        val imgAvt = headerView.findViewById<ImageView>(R.id.imgAvt)
+        var currentUser = auth.currentUser
+        if(currentUser != null){
+            if(!currentUser.displayName.isNullOrEmpty()){
+                tvName.text = currentUser.displayName
+            }else{
+                tvName.text = currentUser.email
+            }
+            if(currentUser.photoUrl == null){
+                imgAvt.setImageResource(R.drawable.backgr4_f)
+            }else{
+                Glide.with(this)
+                    .load(currentUser.photoUrl.toString())
+                    .placeholder(R.drawable.backgr4_f)
+                    .error(R.drawable.backgr4_f)
+                    .circleCrop()
+                    .into(imgAvt)
+            }
+        }
     }
 
     private fun registerFilterEvents() {
@@ -161,11 +195,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         dbRef = FirebaseDatabase.getInstance().getReference("Users")
         currentUserId = auth.currentUser?.uid.toString()
         navController = view.findNavController()
+        credentialManager = CredentialManager.create(requireContext())
+
         taskAdpater = TaskAdapter(mutableListOf(),
             onItemClick = {task ->
-            val dialogDetail = TaskDetailPopupFragment.newInstance(task)
-            dialogDetail.show(childFragmentManager, "TaskDetailPopup")
-        },
+                val dialogDetail = TaskDetailPopupFragment.newInstance(task)
+                dialogDetail.show(childFragmentManager, "TaskDetailPopup")
+            },
             onTaskCheckedChange = {updatedTask ->
                 //update to room db
                 taskViewModel.update(updatedTask)
@@ -187,6 +223,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 editPopup.show(childFragmentManager, "EditTask")
             })
     }
+
     private fun registerEvents() {
         //hien thi navigationView
         binding.btnShowListOptions.setOnClickListener {
@@ -262,8 +299,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun handleLogout() {
         val userNeedToClear = currentUserId
+
+        // Xóa tasks trong Room DB
         taskViewModel.deleteAllTaskByUserId(currentUserId)
-        auth.signOut()
-        navController.navigate(R.id.action_homeFragment_to_signInFragment)
+
+        // Clear Google credential state để có thể chọn tài khoản khác lần sau
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    credentialManager.clearCredentialState(
+                        ClearCredentialStateRequest()
+                    )
+                } catch (e: Exception) {
+                    // Log nhưng không cần hiển thị lỗi cho user
+                    android.util.Log.e("HomeFragment", "Error clearing credential state: ${e.message}")
+                }
+
+                // Sign out khỏi Firebase
+                auth.signOut()
+
+                // Navigate về màn hình đăng nhập
+                navController.navigate(R.id.action_homeFragment_to_signInFragment)
+            }
+        } else {
+            // Đối với Android version < 34, chỉ sign out Firebase
+            auth.signOut()
+            navController.navigate(R.id.action_homeFragment_to_signInFragment)
+        }
     }
 }

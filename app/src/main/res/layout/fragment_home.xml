@@ -73,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:contentDescription="@string/th_m"
+            android:contentDescription="@string/add_task"
             android:src="@drawable/ic_baseline_add_"
             app:backgroundTint="@color/purple_500"
             app:tint="@android:color/white"
