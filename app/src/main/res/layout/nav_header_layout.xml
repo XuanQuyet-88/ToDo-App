@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorPrimary"
@@ -43,23 +42,68 @@
         app:layout_constraintTop_toBottomOf="@+id/imgAvt" />
 
     <TextView
+        android:id="@+id/tvSortTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Sắp xếp theo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <RadioGroup
+        android:id="@+id/rgSort"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSortTitle">
+
+        <RadioButton
+            android:id="@+id/rbSortByDateDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:buttonTint="@color/white"
+            android:checked="true"
+            android:text="@string/ng_y_m_i_nh_t"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/rbSortByDateAsc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:buttonTint="@color/white"
+            android:text="@string/ng_y_c_nh_t"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:id="@+id/rbSortByName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:buttonTint="@color/white"
+            android:text="@string/t_n_a_z"
+            android:textColor="@color/white" />
+    </RadioGroup>
+
+    <TextView
         android:id="@+id/tvFilterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Bộ lọc"
+        android:text="@string/b_l_c"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider" />
+        app:layout_constraintTop_toBottomOf="@+id/rgSort" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chipGroupStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFilterTitle">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFilterTitle"
+        app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipAll"
@@ -67,52 +111,54 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Tất cả" />
+            android:text="@string/t_t_c" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipCompleted"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hoàn thành" />
+            android:text="@string/ho_n_th_nh" />
+
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPending"
             style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chưa làm" />
+            android:text="@string/ch_a_l_m" />
     </com.google.android.material.chip.ChipGroup>
 
     <TextView
         android:id="@+id/tvStartDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Từ ngày"
         android:paddingVertical="8dp"
+        android:text="@string/t_ng_y"
         android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnClearDateFilter"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroupStatus"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroupStatus" />
 
     <TextView
         android:id="@+id/tvEndDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Đến ngày"
-        android:textColor="@color/white"
         android:paddingVertical="8dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/n_ng_y"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/btnClearDateFilter"
-        app:layout_constraintTop_toBottomOf="@+id/tvStartDate"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvStartDate" />
 
     <ImageView
         android:id="@+id/btnClearDateFilter"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:src="@android:drawable/ic_menu_close_clear_cancel"
-        app:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/tvEndDate"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvStartDate"
-        app:layout_constraintBottom_toBottomOf="@id/tvEndDate"/>
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

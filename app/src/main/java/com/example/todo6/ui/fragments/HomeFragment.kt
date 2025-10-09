@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RadioGroup
 import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
@@ -29,6 +30,7 @@ import com.example.todo6.data.repository.TaskRepository
 import com.example.todo6.databinding.FragmentHomeBinding
 import com.example.todo6.ui.task.AddTaskPopupFragment
 import com.example.todo6.ui.task.EditTaskFragment
+import com.example.todo6.ui.task.SortOrder
 import com.example.todo6.ui.task.TaskAdapter
 import com.example.todo6.ui.task.TaskDetailPopupFragment
 import com.example.todo6.ui.task.TaskViewModel
@@ -187,6 +189,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             tvStartDate.text = "Từ ngày"
             tvEndDate.text = "Đến ngày"
             it.visibility = View.GONE
+        }
+
+        val rgSort = headerView.findViewById<RadioGroup>(R.id.rgSort)
+        rgSort.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId){
+                R.id.rbSortByName -> taskViewModel.setSortOrder(SortOrder.BY_NAME)
+                R.id.rbSortByDateDesc -> taskViewModel.setSortOrder(SortOrder.BY_DATE_DESC)
+                R.id.rbSortByDateAsc -> taskViewModel.setSortOrder(SortOrder.BY_DATE_ASC)
+            }
         }
     }
 

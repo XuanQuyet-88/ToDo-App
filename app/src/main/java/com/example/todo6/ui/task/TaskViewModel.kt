@@ -12,29 +12,60 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
+//class const
+enum class SortOrder { BY_DATE_DESC, BY_DATE_ASC, BY_NAME }
 class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
     private val _searchQuery = MutableLiveData<String>(null)
     private val _filterStatus = MutableLiveData<Boolean?>(null)
     private val _startDate = MutableLiveData<Long?>(null)
     private val _endDate = MutableLiveData<Long?>(null)
+    private val _sortOrder = MutableLiveData<SortOrder>(SortOrder.BY_DATE_DESC)
 
     val filteredTasks: LiveData<List<Task>>
+
     init {
         filteredTasks = MediatorLiveData<List<Task>>().apply {
-            var source: LiveData<List<Task>>? = null
+            var currentSource: LiveData<List<Task>>? = null
 
-            val observer = Observer<Any?>{
-                source?.let { removeSource(it) }
+            val observer = Observer<Any?> {
+                currentSource?.let { removeSource(it) }
 
                 val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return@Observer
                 val query = _searchQuery.value
                 val status = _filterStatus.value
                 val startDate = _startDate.value
                 val endDate = _endDate.value
+                val sortOrder = _sortOrder.value ?: SortOrder.BY_DATE_DESC
 
-                source = repository.getFilteredTasks(userId, query, status, startDate, endDate)
-                source.let { newSource ->
-                    addSource(newSource){tasks ->
+                val newSource = when (sortOrder) {
+                    SortOrder.BY_DATE_DESC -> repository.sortTasksByDateDesc(
+                        userId,
+                        query,
+                        status,
+                        startDate,
+                        endDate
+                    )
+
+                    SortOrder.BY_DATE_ASC -> repository.sortTasksByDateAsc(
+                        userId,
+                        query,
+                        status,
+                        startDate,
+                        endDate
+                    )
+
+                    SortOrder.BY_NAME -> repository.sortTasksByName(
+                        userId,
+                        query,
+                        status,
+                        startDate,
+                        endDate
+                    )
+                }
+
+                currentSource = newSource
+                currentSource.let { newSource ->
+                    addSource(newSource) { tasks ->
                         value = tasks ?: emptyList()
                     }
                 }
@@ -43,7 +74,12 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
             addSource(_filterStatus, observer)
             addSource(_startDate, observer)
             addSource(_endDate, observer)
+            addSource(_sortOrder, observer)
         }
+    }
+
+    fun setSortOrder(sortOrder: SortOrder) {
+        _sortOrder.value = sortOrder
     }
 
     fun setSearchQuery(query: String?) {
@@ -54,14 +90,14 @@ class TaskViewModel(private val repository: TaskRepository) : ViewModel() {
         _filterStatus.value = status
     }
 
-    fun setFilterStartDate(calendar: Calendar?){
+    fun setFilterStartDate(calendar: Calendar?) {
         calendar?.set(Calendar.HOUR_OF_DAY, 0)
         calendar?.set(Calendar.MINUTE, 0)
         calendar?.set(Calendar.SECOND, 0)
         _startDate.value = calendar?.timeInMillis
     }
 
-    fun setFilterEndDate(calendar: Calendar?){
+    fun setFilterEndDate(calendar: Calendar?) {
         calendar?.set(Calendar.HOUR_OF_DAY, 23)
         calendar?.set(Calendar.MINUTE, 59)
         calendar?.set(Calendar.SECOND, 59)

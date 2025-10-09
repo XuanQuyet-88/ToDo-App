@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDo6</string>
+    <string name="app_name">ToDo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="type_your_email">Type your Email</string>
@@ -23,5 +23,14 @@
     <string name="status">Status:</string>
     <string name="ng">Đóng</string>
     <string name="default_web_client_id">826632281203-phk5fccnu7l7v4u78a2s0malj9hmj7hj.apps.googleusercontent.com</string>
-    <string name="add_task">Add Task</string>D
+    <string name="add_task">Add Task</string>
+    <string name="t_t_c">Tất cả</string>
+    <string name="ho_n_th_nh">Hoàn thành</string>
+    <string name="ch_a_l_m">Chưa làm</string>
+    <string name="t_ng_y">Từ ngày</string>
+    <string name="n_ng_y">Đến ngày</string>
+    <string name="b_l_c">Bộ lọc</string>
+    <string name="t_n_a_z">Tên (A-Z)</string>
+    <string name="ng_y_c_nh_t">Ngày (cũ nhất)</string>
+    <string name="ng_y_m_i_nh_t">Ngày (mới nhất)</string>D
 </resources>

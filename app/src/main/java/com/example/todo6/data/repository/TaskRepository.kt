@@ -34,4 +34,34 @@ class TaskRepository(private val taskDAO: TaskDAO) {
     ): LiveData<List<Task>>{
         return taskDAO.getFilteredTask(userId, query, status, startDate, endDate)
     }
+
+    fun sortTasksByDateDesc(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ): LiveData<List<Task>>{
+        return taskDAO.sortTasksByDateDesc(userId, query, status, startDate, endDate)
+    }
+
+    fun sortTasksByDateAsc(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ): LiveData<List<Task>>{
+        return taskDAO.sortTasksByDateAsc(userId, query, status, startDate, endDate)
+    }
+
+    fun sortTasksByName(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ) : LiveData<List<Task>>{
+        return taskDAO.sortTasksByName(userId, query, status, startDate, endDate)
+    }
 }

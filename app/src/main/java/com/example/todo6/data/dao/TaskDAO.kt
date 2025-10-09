@@ -43,4 +43,52 @@ interface TaskDAO {
         startDate: Long?,
         endDate: Long?
     ) : LiveData<List<Task>>
+
+    @Query("""
+        SELECT * FROM tasks WHERE userId = :userId
+        AND (:query IS NULL OR title LIKE '%' || :query || '%')
+        AND (:status IS NULL OR completed = :status)
+        AND (:startDate IS NULL OR deadline >= :startDate)
+        AND (:endDate IS NULL OR deadline <= :endDate)
+        ORDER BY title ASC
+    """)
+    fun sortTasksByName(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ) : LiveData<List<Task>>
+
+    @Query("""
+        SELECT * FROM tasks WHERE userId = :userId
+        AND (:query IS NULL OR title LIKE '%' || :query || '%')
+        AND (:status IS NULL OR completed = :status)
+        AND (:startDate IS NULL OR deadline >= :startDate)
+        AND (:endDate IS NULL OR deadline <= :endDate)
+        ORDER BY deadline DESC
+    """)
+    fun sortTasksByDateDesc(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ) : LiveData<List<Task>>
+
+    @Query("""
+        SELECT * FROM tasks WHERE userId = :userId
+        AND (:query IS NULL OR title LIKE '%' || :query || '%')
+        AND (:status IS NULL OR completed = :status)
+        AND (:startDate IS NULL OR deadline >= :startDate)
+        AND (:endDate IS NULL OR deadline <= :endDate)
+        ORDER BY deadline ASC
+    """)
+    fun sortTasksByDateAsc(
+        userId: String,
+        query: String?,
+        status: Boolean?,
+        startDate: Long?,
+        endDate: Long?
+    ) : LiveData<List<Task>>
 }
