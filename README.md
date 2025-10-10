@@ -11,7 +11,9 @@
 | Màn hình Đăng nhập | Màn hình Chính | Menu Lọc & Sắp xếp |
 | :---: | :---: | :---: |
 | ![Ảnh màn hình Đăng nhập](![sigin_screen_todo](https://github.com/user-attachments/assets/d037a9ea-8ce9-466b-b10c-976a947a2466)
-) | ![Ảnh màn hình Chính](https://i.imgur.com/example-home.png) | ![Ảnh màn hình Menu](https://i.imgur.com/example-drawer.png) |
+) | ![Ảnh màn hình Chính](![main_act_todo](https://github.com/user-attachments/assets/46f62036-75c6-45f8-9921-2c9611896bba)
+) | ![Ảnh màn hình Menu](![filter_sort_screen_todo_app](https://github.com/user-attachments/assets/ea629a06-ca43-4834-bf0d-4a8105f34049)
+g) |
 *(Lưu ý: Bạn hãy thay thế các link ảnh trên bằng ảnh chụp màn hình thực tế của ứng dụng)*
 
 ## Tính năng chính
