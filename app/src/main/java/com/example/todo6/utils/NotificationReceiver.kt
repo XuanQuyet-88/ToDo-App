@@ -29,7 +29,7 @@ class NotificationReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val builder = NotificationCompat.Builder(context, "task_channel")
-            .setSmallIcon(R.drawable.design_two)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(desc)
             .setContentIntent(pendingIntent)

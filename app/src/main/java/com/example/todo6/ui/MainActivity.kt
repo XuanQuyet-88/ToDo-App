@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleNotificationIntent(intent: Intent){
-        val taskId = intent?.getStringExtra("opendTask")
+        val taskId = intent.getStringExtra("opendTask")
         if(taskId != null){
             val bundle = Bundle()
             bundle.putString("opendTask", taskId)
