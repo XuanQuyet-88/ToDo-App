@@ -1,103 +1,168 @@
-# ToDo App - Ứng dụng Ghi Chú Công Việc
+ToDo App - Ứng dụng Quản lý Công việc
+Một ứng dụng To-Do List đầy đủ tính năng được xây dựng cho nền tảng Android. Ứng dụng cho phép người dùng quản lý các công việc hàng ngày một cách hiệu quả, với dữ liệu được đồng bộ hóa real-time giữa các thiết bị thông qua Firebase và lưu trữ cục bộ bằng Room Database, đảm bảo có thể sử dụng ngay cả khi không có mạng.
 
-![Language](https://img.shields.io/badge/Language-Kotlin-blue.svg)
-![Platform](https://img.shields.io/badge/Platform-Android-brightgreen.svg)
-![API](https://img.shields.io/badge/API-24%2B-orange.svg)
+📸 Ảnh chụp màn hình
+Màn hình Đăng nhập
 
-Đây là một ứng dụng To-Do List đầy đủ tính năng được xây dựng cho nền tảng Android. Ứng dụng cho phép người dùng quản lý các công việc hàng ngày một cách hiệu quả, với dữ liệu được đồng bộ hóa real-time giữa các thiết bị thông qua Firebase và lưu trữ cục bộ bằng Room Database, đảm bảo có thể sử dụng ngay cả khi không có mạng.
+Màn hình Chính
 
-## Ảnh chụp màn hình
+Menu Lọc & Sắp xếp
 
-| Màn hình Đăng nhập | Màn hình Chính | Menu Lọc & Sắp xếp |
-| :---: | :---: | :---: |
-| ![Ảnh màn hình Đăng nhập](![sigin_screen_todo](https://github.com/user-attachments/assets/d037a9ea-8ce9-466b-b10c-976a947a2466)
-) | ![Ảnh màn hình Chính](![main_act_todo](https://github.com/user-attachments/assets/46f62036-75c6-45f8-9921-2c9611896bba)
-) | ![Ảnh màn hình Menu](![filter_sort_screen_todo_app](https://github.com/user-attachments/assets/ea629a06-ca43-4834-bf0d-4a8105f34049)
-g) |
-*(Lưu ý: Bạn hãy thay thế các link ảnh trên bằng ảnh chụp màn hình thực tế của ứng dụng)*
+![sigin_screen_todo](https://github.com/user-attachments/assets/c1cc75f0-32cd-47a0-a8ea-f1c5443e270a)
 
-## Tính năng chính
 
-* **Xác thực người dùng:**
-    * Đăng ký và đăng nhập bằng Email/Password.
-    * Đăng nhập bằng tài khoản Google (sử dụng **Credential Manager** hiện đại).
-    * Tự động đăng nhập cho các phiên sau.
-    * Đăng xuất an toàn, xóa thông tin đăng nhập Google đã lưu.
+![main_act_todo](https://github.com/user-attachments/assets/6d5887b3-a3eb-45c7-9f05-2b054a910c32)
 
-* **Quản lý công việc (CRUD):**
-    * **Thêm** công việc mới với tiêu đề, mô tả và thời hạn (deadline).
-    * **Xem** danh sách công việc.
-    * **Sửa** lại thông tin của công việc đã có.
-    * **Xóa** công việc (có hộp thoại xác nhận).
-    * **Đánh dấu** công việc đã hoàn thành hoặc chưa hoàn thành.
 
-* **Lọc và Tìm kiếm:**
-    * **Tìm kiếm** công việc theo tiêu đề (real-time).
-    * **Lọc** theo trạng thái: Tất cả, Đã hoàn thành, Chưa làm.
-    * **Lọc** theo khoảng ngày (từ ngày - đến ngày).
+![filter_sort_screen_todo_app](https://github.com/user-attachments/assets/50295e4b-cc13-420f-93d3-0336171b2586)
 
-* **Sắp xếp:**
-    * Sắp xếp danh sách công việc theo **ngày** (mới nhất hoặc cũ nhất).
-    * Sắp xếp danh sách công việc theo **tên** (A-Z).
 
-* **Đồng bộ hóa dữ liệu:**
-    * Sử dụng **Firebase Realtime Database** để đồng bộ dữ liệu giữa các thiết bị.
-    * Sử dụng **Room Database** để lưu trữ dữ liệu cục bộ, hoạt động như một "Single Source of Truth", cho phép ứng dụng hoạt động offline.
+✨ Tính năng chính
+Xác thực người dùng:
 
-* **Thông báo nhắc nhở:**
-    * Đặt lịch thông báo (notification) cho các công việc có thời hạn bằng `AlarmManager`.
-    * Hủy và đặt lại thông báo khi người dùng cập nhật công việc.
+Đăng ký và đăng nhập bằng Email/Password.
 
-* **Giao diện người dùng:**
-    * Thiết kế theo phong cách Material Design.
-    * Sử dụng `Navigation Drawer` để chứa các chức năng nâng cao (lọc, sắp xếp, thông tin người dùng) giúp giao diện chính luôn gọn gàng.
-    * Hiển thị thông tin người dùng (tên, avatar) trong menu.
+Đăng nhập bằng tài khoản Google (sử dụng Credential Manager hiện đại).
 
-## Kiến trúc và Công nghệ sử dụng
+Tự động đăng nhập cho các phiên sau.
 
-* **Kiến trúc:**
-    * **MVVM (Model-View-ViewModel)**: Tách biệt logic giao diện (View), logic nghiệp vụ (ViewModel) và dữ liệu (Model), giúp code dễ dàng bảo trì và mở rộng.
-    * **Repository Pattern**: Cung cấp một lớp trừu tượng để quản lý các nguồn dữ liệu (local và remote).
+Đăng xuất an toàn, xóa thông tin đăng nhập Google đã lưu.
 
-* **Công nghệ sử dụng:**
-    * **Ngôn ngữ**: [Kotlin](https://kotlinlang.org/)
-    * **Lập trình bất đồng bộ**: [Kotlin Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
-    * **Android Jetpack**:
-        * `ViewModel`: Quản lý trạng thái và logic liên quan đến UI.
-        * `LiveData` & `MediatorLiveData`: Tạo các luồng dữ liệu phản ứng.
-        * `Room`: Lưu trữ dữ liệu cục bộ.
-        * `Navigation Component`: Quản lý luồng di chuyển giữa các màn hình.
-        * `ViewBinding`: Tương tác với các view một cách an toàn.
-    * **Firebase**:
-        * `Firebase Authentication`: Xác thực người dùng.
-        * `Firebase Realtime Database`: Đồng bộ hóa dữ liệu.
-    * **Google Sign-In**:
-        * `Credential Manager`: API hiện đại để xử lý đăng nhập bằng Google.
-    * **UI**:
-        * `Material Design Components`: (Card, Chip, Button,...)
-        * `RecyclerView`: Hiển thị danh sách.
-        * [Glide](https://github.com/bumptech/glide): Tải và hiển thị ảnh.
-        * [CircleImageView](https://github.com/hdodenhof/CircleImageView): Hiển thị avatar dạng tròn.
+Quản lý công việc (CRUD):
 
-## Hướng dẫn Cài đặt
+Thêm công việc mới với tiêu đề, mô tả và thời hạn (deadline).
 
-1.  **Clone a copy of the repository:**
-    ```bash
-    git clone [https://github.com/your-username/your-repository-name.git](https://github.com/your-username/your-repository-name.git)
-    ```
+Xem danh sách công việc chi tiết.
 
-2.  **Mở dự án bằng Android Studio.**
+Sửa lại thông tin của công việc đã có.
 
-3.  **Cấu hình Firebase:**
-    * Truy cập [Firebase Console](https://console.firebase.google.com/) và tạo một dự án mới.
-    * Trong mục **Authentication**, vào tab **Sign-in method** và bật **Email/Password** và **Google**.
-    * Trong mục **Realtime Database**, tạo một database mới ở chế độ test.
-    * Trong **Project Settings**, thêm một ứng dụng Android với package name là `com.example.todo6`.
-    * Làm theo hướng dẫn để lấy **mã SHA-1** (debug) từ máy của bạn và thêm vào phần cấu hình ứng dụng Android trong Firebase.
-    * Tải file `google-services.json` từ Firebase và đặt nó vào thư mục `app/` của dự án.
+Xóa công việc (có hộp thoại xác nhận).
 
-4.  **Build và chạy ứng dụng.**
+Đánh dấu công việc đã hoàn thành hoặc chưa hoàn thành.
 
-## Tác giả
+Lọc, Tìm kiếm và Sắp xếp:
 
-* [Tên của bạn] - [Link GitHub của bạn]
+Tìm kiếm công việc theo tiêu đề (real-time).
+
+Lọc theo trạng thái: Tất cả, Đã hoàn thành, Chưa làm.
+
+Lọc theo khoảng ngày (từ ngày - đến ngày).
+
+Sắp xếp danh sách theo ngày (mới nhất/cũ nhất) hoặc theo tên (A-Z).
+
+Đồng bộ hóa & Offline-first:
+
+Sử dụng Firebase Realtime Database để đồng bộ dữ liệu giữa các thiết bị.
+
+Sử dụng Room Database làm "Single Source of Truth", cho phép ứng dụng hoạt động mượt mà ngay cả khi offline.
+
+Thông báo nhắc nhở:
+
+Đặt lịch thông báo (notification) cho các công việc có thời hạn bằng AlarmManager.
+
+Tự động hủy và đặt lại thông báo khi người dùng cập nhật công việc.
+
+Giao diện người dùng:
+
+Thiết kế theo phong cách Material Design.
+
+Sử dụng Navigation Drawer để chứa các chức năng nâng cao, giúp giao diện chính luôn gọn gàng.
+
+Hiển thị thông tin người dùng (tên, avatar) trong menu.
+
+🏗️ Kiến trúc và Công nghệ sử dụng
+Kiến trúc
+MVVM (Model-View-ViewModel): Tách biệt logic giao diện (View), logic nghiệp vụ (ViewModel) và dữ liệu (Model).
+
+Repository Pattern: Cung cấp một lớp trừu tượng để quản lý các nguồn dữ liệu (local và remote).
+
+Công nghệ sử dụng
+Ngôn ngữ: Kotlin
+
+Lập trình bất đồng bộ: Kotlin Coroutines & LifecycleScope.
+
+Android Jetpack:
+
+ViewModel: Quản lý trạng thái và logic liên quan đến UI.
+
+LiveData & MediatorLiveData: Tạo các luồng dữ liệu phản ứng.
+
+Room: Lưu trữ dữ liệu cục bộ.
+
+Navigation Component: Quản lý luồng di chuyển giữa các màn hình.
+
+ViewBinding: Tương tác với các view một cách an toàn.
+
+Firebase:
+
+Firebase Authentication: Xác thực người dùng.
+
+Firebase Realtime Database: Đồng bộ hóa dữ liệu.
+
+Google Sign-In:
+
+Credential Manager: API hiện đại để xử lý đăng nhập bằng Google.
+
+UI:
+
+Material Design Components: (Card, Chip, Button,...)
+
+RecyclerView: Hiển thị danh sách.
+
+Glide: Tải và hiển thị ảnh.
+
+CircleImageView: Hiển thị avatar dạng tròn.
+
+🌳 Cấu trúc thư mục dự án
+com.example.todo6
+├── data
+│   ├── dao
+│   │   └── TaskDAO.kt
+│   ├── database
+│   │   └── TaskDatabase.kt
+│   ├── model
+│   │   └── Task.kt
+│   └── repository
+│       └── TaskRepository.kt
+├── ui
+│   ├── fragments
+│   │   ├── HomeFragment.kt
+│   │   ├── SignInFragment.kt
+│   │   ├── SignUpFragment.kt
+│   │   └── SplashFragment.kt
+│   ├── task
+│   │   ├── AddTaskPopupFragment.kt
+│   │   ├── EditTaskFragment.kt
+│   │   ├── TaskAdapter.kt
+│   │   ├── TaskDetailPopupFragment.kt
+│   │   ├── TaskViewModel.kt
+│   │   └── TaskViewModelFactory.kt
+│   └── MainActivity.kt
+└── utils
+    └── NotificationReceiver.kt
+
+🚀 Hướng dẫn Cài đặt
+Clone a copy of the repository:
+
+git clone [https://github.com/XuanQuyet-88/ToDo-App.git](https://github.com/XuanQuyet-88/ToDo-App.git)
+
+Mở dự án bằng Android Studio.
+
+Cấu hình Firebase:
+
+Truy cập Firebase Console và tạo một dự án mới.
+
+Trong mục Authentication, vào tab Sign-in method và bật Email/Password và Google.
+
+Trong mục Realtime Database, tạo một database mới ở chế độ test.
+
+Trong Project Settings, thêm một ứng dụng Android với package name là com.example.todo6.
+
+Làm theo hướng dẫn để lấy mã SHA-1 (debug) từ máy của bạn và thêm vào phần cấu hình ứng dụng Android trong Firebase.
+
+Tải file google-services.json từ Firebase và đặt nó vào thư mục app/ của dự án.
+
+Build và chạy ứng dụng.
+
+👨‍💻 Tác giả
+Nguyễn Xuân Quyết - GitHub
