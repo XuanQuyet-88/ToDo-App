@@ -8,7 +8,9 @@ Một ứng dụng To-Do List đầy đủ tính năng được xây dựng cho 
 
 | Màn hình Đăng nhập | Màn hình Chính | Menu Lọc & Sắp xếp |
 |:------------------:|:--------------:|:------------------:|
-| ![Màn hình Đăng nhập](https://github.com/user-attachments/assets/c1cc75f0-32cd-47a0-a8ea-f1c5443e270a) | ![Màn hình Chính](https://github.com/user-attachments/assets/6d5887b3-a3eb-45c7-9f05-2b054a910c32) | ![Menu Lọc & Sắp xếp](https://github.com/user-attachments/assets/50295e4b-cc13-420f-93d3-0336171b2586) |
+| ![Màn hình Đăng nhập](https://github.com/user-attachments/assets/c1cc75f0-32cd-47a0-a8ea-f1c5443e270a) | ![Màn hình Chính]![Screenshot_20251115-064541_ToDo](https://github.com/user-attachments/assets/034423a9-bc16-464e-8bbf-2e5e6f57d3b3)
+) | ![Menu Lọc & Sắp xếp](https://github.com/user-attachments/assets/50295e4b-cc13-420f-93d3-0336171b2586) |![Screenshot_20251115-064541_ToDo](https://github.com/user-attachments/assets/8bd7ec56-eb41-474d-a8ad-c0de1272a200)
+
 
 ---
 
